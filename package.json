@@ -14,7 +14,22 @@
   "author": "Bruce B. Anderson <anderson.bruce.b@gmail.com>",
   "type": "module",
   "main": "do-inc.js",
+  "module": "do-inc.js",
   "scripts": {
-    "test": "test playwright"
+    "serve": "python3 ./node_modules/ssi-server/ssi_server.py",
+    "test": "playwright test",
+    "safari": "npx playwright wk http://localhost:8000",
+    "update": "ncu -u && npm install"
+  },
+  "dependencies": {
+    "be-enhanced": "0.0.186",
+    "be-hive": "0.0.265",
+    "mount-observer": "0.0.98",
+    "trans-render": "0.0.950"
+  },
+  "devDependencies": {
+    "ssi-server": "0.0.1",
+    "@playwright/test": "1.55.0",
+    "xtal-element": "0.0.631"
   }
 }

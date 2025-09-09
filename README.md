@@ -1,10 +1,12 @@
-# do-inc
+# do-inc (➕)
+
+Increment a property from the host or a peer element via a specified amount on a specified event.
 
 ```html
 <my-component itemscope>
     <div 🔭 itemprop=likes></div>
     <button do-inc="likes byAmt `1` on click">Like</button>
-    <button do-inc="likes byAmt `-1`">Dislike</button>
+    <button ➕="likes byAmt `-1`">Dislike</button>
     <xtal-element 
         prop-defaults='{
             "likes": 0,
