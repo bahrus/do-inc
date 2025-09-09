@@ -1,0 +1,20 @@
+{
+  "name": "do-inc",
+  "version": "0.0.0",
+  "description": "Increment a host or peer element prop",
+  "homepage": "https://github.com/bahrus/do-inc#readme",
+  "bugs": {
+    "url": "https://github.com/bahrus/do-inc/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bahrus/do-inc.git"
+  },
+  "license": "MIT",
+  "author": "Bruce B. Anderson <anderson.bruce.b@gmail.com>",
+  "type": "module",
+  "main": "do-inc.js",
+  "scripts": {
+    "test": "test playwright"
+  }
+}
