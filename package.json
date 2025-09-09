@@ -1,6 +1,6 @@
 {
   "name": "do-inc",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Increment a host or peer element prop",
   "homepage": "https://github.com/bahrus/do-inc#readme",
   "bugs": {
