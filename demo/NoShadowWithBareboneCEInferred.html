@@ -5,13 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>No Shadow With Barebone Custom Element with Inferred values</title>
     <!-- #include virtual="/imports.html" -->
+
+</head>
+<body>
     <be-hive>
         <script type=emc-parser 
-                src="be-hive/parsers/parse-pattern-statements.js" 
-                parser-name=parse-pattern-statements></script>
+                src="be-hive/parsers/parse-grouped-capture-statements.js" 
+                parser-name=parse-grouped-capture-statements></script>
         <script type=emc 
                 src="do-inc/➕.json" 
-                wait-for-parsers=parse-pattern-statements></script>
+                wait-for-parsers=parse-grouped-capture-statements></script>
     </be-hive>
     <script type=module>
         import 'be-hive/be-hive.js';
@@ -28,8 +31,6 @@
         customElements.define('mood-stone', MoodStone);
         document.querySelector('mood-stone').age = 0;
     </script>
-</head>
-<body>
     <mood-stone itemscope>
         <span itemprop=age></span>
         <button name=age ➕>Increment</button>

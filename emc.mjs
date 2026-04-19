@@ -38,7 +38,7 @@ export const emc = {
             base: 'do-inc',
             _base: {
                 mapsTo: 'parsedStatements',
-                parser: 'parse-pattern-statements',
+                parser: 'parse-grouped-capture-statements',
                 instanceOf: 'Array',
                 parserConfig: parsePatterns
             }
