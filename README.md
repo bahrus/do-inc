@@ -34,7 +34,7 @@ The following shows all the required html mockup in all its glory
 </mood-stone>
 ```
 
-Inferring the property to increment:
+## Inferring the property to increment:
 
 ```html
 <mood-stone itemscope>
@@ -43,9 +43,9 @@ Inferring the property to increment:
 </mood-stone>
 ```
 
-Increments age by 1 on click.
+This increments age by 1 on click.
 
-Specifying the event to trigger increment:
+## Specifying the event to trigger increment:
 
 ```html
 <mood-stone itemscope>
@@ -53,3 +53,14 @@ Specifying the event to trigger increment:
     <button ➕="age byAmt `12` on mouseover">Increment</button>
 </mood-stone>
 ```
+
+## Inferring the increment amount
+
+```html
+<mood-stone itemscope>
+    <span itemprop=age></span>
+    <button  ➕=age>Increment</button>
+</mood-stone>
+```
+
+This infers that the increment amount should be 1 on click.

@@ -24,6 +24,13 @@ const parsePatterns = [
         description: 'Target property and amount with default event',
         //defaultVals,
         //dssKeys: [['targetSpecifier', 'targetSpecifier'], ['sourceSpecifier', 'sourceSpecifier']]
+    },
+    {
+        name: 'targetOnly',
+        pattern: String.raw `^(?<prop>.+)$`,
+        description: 'Target property only, infers amount of 1 and click event',
+        //defaultVals,
+        //dssKeys: [['targetSpecifier', 'targetSpecifier'], ['sourceSpecifier', 'sourceSpecifier']]
     }
 ];
 

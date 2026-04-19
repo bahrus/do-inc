@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No Shadow With Barebone Custom Element with Inferred values II</title>
+    <!-- #include virtual="/imports.html" -->
+
+</head>
+<body>
+    <be-hive>
+        <script type=emc-parser 
+                src="be-hive/parsers/parse-grouped-capture-statements.js" 
+                parser-name=parse-grouped-capture-statements></script>
+        <script type=emc 
+                src="do-inc/➕.json" 
+                wait-for-parsers=parse-grouped-capture-statements></script>
+    </be-hive>
+    <script type=module>
+        import 'be-hive/be-hive.js';
+        class MoodStone extends HTMLElement {
+            #age;
+            get age(){
+                return this.#age;
+            }
+            set age(nv){
+                this.#age = nv;
+                this.querySelector('[itemprop="age"]').textContent = nv;
+            }
+        }
+        customElements.define('mood-stone', MoodStone);
+        document.querySelector('mood-stone').age = 0;
+    </script>
+    <mood-stone itemscope>
+        <span itemprop=age></span>
+        <button  ➕=age>Increment</button>
+    </mood-stone>
+</body>
+</html>

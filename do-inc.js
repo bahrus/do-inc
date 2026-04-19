@@ -52,9 +52,8 @@ class DoInc {
      */
     async hydrate(self){
         const { parsedStatements, enhancedElement } = self;
-        console.log({parsedStatements});
         const {success, statements} = parsedStatements;
-        if(!success) return;
+        if(!success) throw 400;
         const { nudge } = await import('mount-observer/nudge.js');
         /** @type Set<string> */
         //const alreadyAdded = new Set();
@@ -77,26 +76,12 @@ class DoInc {
                 self.handleEvent(self, e, value);
             });
         }
-        // for (const parsedStatement of parsedStatements.statements) {
-        //     let { value } = parsedStatement;
-        //     if ()
-        //     const {  } = value;
-        //     if (!localEventType) {
-        //         const { stdEvt } = await import('trans-render/asmr/stdEvt.js');
-        //         localEventType = stdEvt(enhancedElement);
-        //     }
-        //     //if(alreadyAdded.has(localEventType)) continue;
-        //     enhancedElement.addEventListener(localEventType, this);
-        //     alreadyAdded.add(localEventType);
-        // }
         nudge(enhancedElement);
         return /** @type {PAP} */({
             resolved: true,
         });
     }
 
-    /** @type {Map<Specifier, WeakRef<EventTarget>>} */
-    #cache = new Map();
 
     /**
      * 
@@ -106,12 +91,14 @@ class DoInc {
      * @returns 
      */
     async handleEvent(self, e, incParameters){
-        console.log({self, e, incParameters});
         const {enhancedElement} = self;
         let {prop, byAmtN, byAmtS, targetElementId} = incParameters;
         if(byAmtN === undefined){
-            if(!byAmtS) throw 400;
-            byAmtN = Number(byAmtS.replaceAll('`', ''));
+            if(byAmtS){
+                byAmtN = Number(byAmtS.replaceAll('`', ''));
+            } else {
+                byAmtN = 1; // Default increment amount
+            }
             incParameters.byAmtN = byAmtN;
         }
         const rn = /** @type {DocumentFragment & {host: unknown}} */ (enhancedElement.getRootNode());
@@ -122,30 +109,6 @@ class DoInc {
         const currentVal = target[prop] || 0;
         const newVal = currentVal + byAmtN;
         target[prop] = newVal;
-        // const { parsedStatements, enhancedElement } = self;
-        // if(!parsedStatements.success) return;
-        // const { find } = await import('trans-render/dss/find.js');
-        // for (const parsedStatement of parsedStatements.statements) {
-        //     const {targetSpecifier, sourceSpecifier} = parsedStatement.value;
-        //     let targetTarget = this.#cache.get(targetSpecifier)?.deref();
-        //     const {prop} = targetSpecifier;
-        //     if(prop === undefined) throw 'NI';
-        //     if (targetTarget === undefined) {
-        //         const remoteTargetTest = await find(enhancedElement, targetSpecifier);
-        //         if (!remoteTargetTest)
-        //             throw 404;
-        //         targetTarget = remoteTargetTest;
-        //         this.#cache.set(targetSpecifier, new WeakRef(/** @type {any} */(targetTarget)));
-        //     }
-        //     const {constVal} = sourceSpecifier;
-        //     if(constVal === undefined){
-        //         throw 'NI';
-        //     }else{
-        //         const val = Number(constVal);
-        //         /** @type {any} */(targetTarget)[prop] += val;
-        //     }
-
-        // }
     }
 }
 

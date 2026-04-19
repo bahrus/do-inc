@@ -18,6 +18,11 @@
                         "name": "targetAmtSource",
                         "pattern": "^(?<prop>.*) byAmt (?<byAmtS>.*)",
                         "description": "Target property and amount with default event"
+                    },
+                    {
+                        "name": "targetOnly",
+                        "pattern": "^(?<prop>.+)$",
+                        "description": "Target property only, infers amount of 1 and click event"
                     }
                 ]
             }
