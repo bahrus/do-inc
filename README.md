@@ -73,3 +73,12 @@ This infers that the increment amount should be 1 on click.
     <button name=age  ➕="byAmt `12`">Increment</button>
 </mood-stone>
 ```
+
+## Specifying the event with inferred prop
+
+```html
+<mood-stone itemscope>
+    <span itemprop=age></span>
+    <button name=age  ➕="byAmt `12` on mouseover">Increment</button>
+</mood-stone>
+```
