@@ -71,6 +71,12 @@ class DoInc {
         for(const statement of statements){
             const {value} = statement;
             if(!value) continue;
+            // If prop is empty or undefined, fall back to name attribute
+            if(!value.prop || value.prop.trim() === ''){
+                const name = enhancedElement.getAttribute('name');
+                if(!name) throw 400;
+                value.prop = name;
+            }
             const {localEventType} = value;
             enhancedElement.addEventListener(localEventType || 'click', e => {
                 self.handleEvent(self, e, value);

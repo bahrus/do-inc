@@ -64,3 +64,12 @@ This increments age by 1 on click.
 ```
 
 This infers that the increment amount should be 1 on click.
+
+## Inferring the name of the property to increment from the name attribute
+
+```html
+<mood-stone itemscope>
+    <span itemprop=age></span>
+    <button name=age  ➕="byAmt `12`">Increment</button>
+</mood-stone>
+```
