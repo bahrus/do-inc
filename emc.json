@@ -1,0 +1,63 @@
+{
+    "enhConfig": {
+        "enhKey": "DoInc",
+        "spawn": "do-inc/do-inc.js",
+        "withAttrs": {
+            "base": "do-inc",
+            "_base": {
+                "mapsTo": "parsedStatements",
+                "parser": "parse-pattern-statements",
+                "instanceOf": "Array",
+                "parserConfig": [
+                    {
+                        "name": "targetAmtSourceOnEvent",
+                        "pattern": "^(?<targetSpecifier.prop>.*) byAmt (?<sourceSpecifier.constVal>.*) on (?<localEventType>.*)",
+                        "description": "Target property, amount, and explicit event type",
+                        "defaultVals": {},
+                        "dssKeys": [
+                            [
+                                "targetSpecifier",
+                                "targetSpecifier"
+                            ],
+                            [
+                                "sourceSpecifier",
+                                "sourceSpecifier"
+                            ]
+                        ]
+                    },
+                    {
+                        "name": "targetAmtSource",
+                        "pattern": "^(?<targetSpecifier.prop>.*) byAmt (?<sourceSpecifier.constVal>.*)",
+                        "description": "Target property and amount with default event",
+                        "defaultVals": {},
+                        "dssKeys": [
+                            [
+                                "targetSpecifier",
+                                "targetSpecifier"
+                            ],
+                            [
+                                "sourceSpecifier",
+                                "sourceSpecifier"
+                            ]
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "customData": {
+        "weakRef": {
+            "properties": [
+                "enhancedElement"
+            ]
+        },
+        "actions": {
+            "hydrate": {
+                "ifAllOf": [
+                    "parsedStatements",
+                    "enhancedElement"
+                ]
+            }
+        }
+    }
+}

@@ -1,55 +1,39 @@
 // @ts-check
-/** @import {Actions, PAP, AllProps, AP} from './types/do-inc/types' */;
-/** @import {RoundaboutOptions} from './types/roundabout/types' */;
-/** @import {ElementEnhancementGateway} from './types/assign-gingerly/types' */;
-/** @import {EMC} from './types/mount-observer/types' */;
-/** @import {RAConfig} from './types/roundabout/types' */;
-/** @import {Specifier} from './types/do-inc/types' */
-/**
- * @type {EMC<any, AllProps, Element, RAConfig<AllProps, Actions>>}
- */
-import emc from './emc.json' with {type: 'json'};
+import { BE } from 'be-enhanced/BE.js';
+import { propInfo, resolved, rejected } from 'be-enhanced/cc.js';
+import { dispatchEvent as de } from 'trans-render/positractions/dispatchEvent.js';
 
-const {customData} = emc;
+/** @import {BEConfig, IEnhancement, BEAllProps} from './ts-refs/be-enhanced/types.d.ts' */
+/** @import {Actions, PAP, AP, BAP, IncParameters} from './ts-refs/do-inc/types' */
+/** @import {Specifier} from './ts-refs/trans-render/dss/types' */
 
 /**
  * @implements {Actions}
  * @implements {EventListenerObject}
  */
-class DoInc {
+class DoInc extends BE {
+    de = de;
 
     /**
-     * @this {AllProps & Actions}
-     * @param {Element & ElementEnhancementGateway} enhancedElement 
-     * @param {*} ctx 
-     * @param {AllProps} initVals 
+     * @type {BEConfig<BAP, Actions & IEnhancement, any>}
      */
-    constructor(enhancedElement, ctx, initVals){
-        this.init(this, enhancedElement, initVals);
+    static config = {
+        propInfo: {
+            ...propInfo,
+            parsedStatements: {},
+            rawStatements: {},
+        },
+        positractions: [
+            resolved, rejected
+        ],
+        compacts:{
+            when_parsedStatements_changes_call_hydrate: 0,
+        }
     }
 
     /**
-     * @param {AllProps & Actions} self 
-     * @param {Element & ElementEnhancementGateway} enhancedElement 
-     * @param {PAP} initVals 
-     */
-    async init(self, enhancedElement, initVals){
-        /**
-         * @type {RoundaboutOptions}
-         */
-        const raOptions = {
-            ...customData,
-            vm: self,
-            initialPropVals: {
-                enhancedElement,
-                ...initVals
-            }
-        };
-        (await import('roundabout-lib/roundabout.js')).roundabout(raOptions);
-    }
-
-    /**
-     * @param {AP} self 
+     * 
+     * @param {BAP & BEAllProps} self 
      */
     async hydrate(self){
         const { parsedStatements, enhancedElement } = self;
@@ -58,7 +42,7 @@ class DoInc {
         const alreadyAdded = new Set();
         for (const parsedStatement of parsedStatements) {
             let { localEventType } = parsedStatement;
-            if (!localEventType) {
+            if (localEventType === undefined) {
                 const { stdEvt } = await import('trans-render/asmr/stdEvt.js');
                 localEventType = stdEvt(enhancedElement);
             }
@@ -71,12 +55,10 @@ class DoInc {
             resolved: true,
         });
     }
-
     /** @type {Map<Specifier, WeakRef<EventTarget>>} */
     #cache = new Map();
-
     async handleEvent(){
-        const self = /** @type {AP} */ (/** @type {any} */ (this));
+        const self = /** @type {BAP & BEAllProps} */ (/** @type {any} */ (this));
         const { parsedStatements, enhancedElement } = self;
         const { find } = await import('trans-render/dss/find.js');
         for (const parsedStatement of parsedStatements) {
@@ -89,18 +71,19 @@ class DoInc {
                 if (!remoteTargetTest)
                     throw 404;
                 targetTarget = remoteTargetTest;
-                this.#cache.set(targetSpecifier, new WeakRef(/** @type {any} */(targetTarget)));
+                this.#cache.set(targetSpecifier, new WeakRef(targetTarget));
             }
             const {constVal} = sourceSpecifier;
             if(constVal === undefined){
                 throw 'NI';
             }else{
                 const val = Number(constVal);
-                /** @type {any} */(targetTarget)[prop] += val;
+                targetTarget[prop] += val;
             }
 
         }
     }
 }
 
+await DoInc.bootUp();
 export {DoInc}
