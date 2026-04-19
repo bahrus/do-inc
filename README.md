@@ -45,7 +45,11 @@ Inferring the property to increment:
 
 Increments age by 1 on click.
 
-Specifying the event
+Specifying the event to trigger increment:
 
 ```html
+<mood-stone itemscope>
+    <span itemprop=age></span>
+    <button ➕="age byAmt `12` on mouseover">Increment</button>
+</mood-stone>
 ```
