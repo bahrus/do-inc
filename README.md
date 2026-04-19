@@ -2,32 +2,50 @@
 
 Increment a property from the host or a peer element via a specified amount on a specified event.
 
+The following shows all the required html mockup in all its glory
+
 ```html
-<my-component itemscope>
-    <div 🔭 itemprop=likes></div>
-    <button do-inc="likes byAmt `1` on click">Like</button>
-    <button ➕="likes byAmt `-1`">Dislike</button>
-    <xtal-element 
-        prop-defaults='{
-            "likes": 0,
-            "isHappy": true,
-        }'
-    ></xtal-element>
-</my-component>
+<be-hive>
+    <script type=emc-parser 
+            src="be-hive/parsers/parse-grouped-capture-statements.js" 
+            parser-name=parse-grouped-capture-statements></script>
+    <script type=emc 
+            src="do-inc/emc.json" 
+            wait-for-parsers=parse-grouped-capture-statements></script>
+</be-hive>
+<script type=module>
+    import 'be-hive/be-hive.js';
+    class MoodStone extends HTMLElement {
+        #age;
+        get age(){
+            return this.#age;
+        }
+        set age(nv){
+            this.#age = nv;
+            this.querySelector('[itemprop="age"]').textContent = nv;
+        }
+    }
+    customElements.define('mood-stone', MoodStone);
+    document.querySelector('mood-stone').age = 0;
+</script>
+<mood-stone itemscope>
+    <span itemprop=age></span>
+    <button do-inc="age byAmt `12`">Increment</button>
+</mood-stone>
 ```
 
-Inferring the property to increment
+Inferring the property to increment:
 
 ```html
-<my-component itemscope>
-    <div 🔭 itemprop=likes></div>
-    <button do-inc="likes byAmt `1` on click">Like</button>
-    <button name=likes ➕>Dislike</button>
-    <xtal-element 
-        prop-defaults='{
-            "likes": 0,
-            "isHappy": true,
-        }'
-    ></xtal-element>
-</my-component>
+<mood-stone itemscope>
+    <span itemprop=age></span>
+    <button name=age ➕>Increment</button>
+</mood-stone>
+```
+
+Increments age by 1 on click.
+
+Specifying the event
+
+```html
 ```
