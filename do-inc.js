@@ -107,6 +107,21 @@ class DoInc {
      */
     async handleEvent(self, e, incParameters){
         console.log({self, e, incParameters});
+        const {enhancedElement} = self;
+        let {prop, byAmtN, byAmtS, targetElementId} = incParameters;
+        if(byAmtN === undefined){
+            if(!byAmtS) throw 400;
+            byAmtN = Number(byAmtS.replaceAll('`', ''));
+            incParameters.byAmtN = byAmtN;
+        }
+        const rn = /** @type {DocumentFragment & {host: unknown}} */ (enhancedElement.getRootNode());
+
+        /** @type {any} */
+        const target = targetElementId ? rn.getElementById(targetElementId) : (enhancedElement.closest('[itemscope]') || rn.host);
+        if(!target) throw 404;
+        const currentVal = target[prop] || 0;
+        const newVal = currentVal + byAmtN;
+        target[prop] = newVal;
         // const { parsedStatements, enhancedElement } = self;
         // if(!parsedStatements.success) return;
         // const { find } = await import('trans-render/dss/find.js');

@@ -13,14 +13,14 @@
 const parsePatterns = [
     {
         name: 'targetAmtSourceOnEvent',
-        pattern: String.raw `^(?<targetSpecifier.prop>.*) byAmt (?<sourceSpecifier.constVal>.*) on (?<localEventType>.*)`,
+        pattern: String.raw `^(?<prop>.*) byAmt (?<byAmtS>.*) on (?<localEventType>.*)`,
         description: 'Target property, amount, and explicit event type',
         //defaultVals,
         //dssKeys: [['targetSpecifier', 'targetSpecifier'], ['sourceSpecifier', 'sourceSpecifier']]
     },
     {
         name: 'targetAmtSource',
-        pattern: String.raw `^(?<targetSpecifier.prop>.*) byAmt (?<sourceSpecifier.constVal>.*)`,
+        pattern: String.raw `^(?<prop>.*) byAmt (?<byAmtS>.*)`,
         description: 'Target property and amount with default event',
         //defaultVals,
         //dssKeys: [['targetSpecifier', 'targetSpecifier'], ['sourceSpecifier', 'sourceSpecifier']]
