@@ -53,11 +53,12 @@ class DoInc {
      */
     async hydrate(self){
         const { parsedStatements, enhancedElement } = self;
-        const { nudge } = await import('mount-observer/refid/nudge.js');
+        if(!parsedStatements.success) return;
+        const { nudge } = await import('mount-observer/nudge.js');
         /** @type Set<string> */
         const alreadyAdded = new Set();
-        for (const parsedStatement of parsedStatements) {
-            let { localEventType } = parsedStatement;
+        for (const parsedStatement of parsedStatements.statements) {
+            let { localEventType } = parsedStatement.value;
             if (!localEventType) {
                 const { stdEvt } = await import('trans-render/asmr/stdEvt.js');
                 localEventType = stdEvt(enhancedElement);
@@ -78,9 +79,10 @@ class DoInc {
     async handleEvent(){
         const self = /** @type {AP} */ (/** @type {any} */ (this));
         const { parsedStatements, enhancedElement } = self;
+        if(!parsedStatements.success) return;
         const { find } = await import('trans-render/dss/find.js');
-        for (const parsedStatement of parsedStatements) {
-            const {targetSpecifier, sourceSpecifier} = parsedStatement;
+        for (const parsedStatement of parsedStatements.statements) {
+            const {targetSpecifier, sourceSpecifier} = parsedStatement.value;
             let targetTarget = this.#cache.get(targetSpecifier)?.deref();
             const {prop} = targetSpecifier;
             if(prop === undefined) throw 'NI';
