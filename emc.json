@@ -21,6 +21,11 @@
                     },
                     {
                         "name": "targetAmtSource",
+                        "pattern": "byAmt (?<byAmtS>.*) on (?<localEventType>.*)",
+                        "description": "Amount and explicit event type with inferred property"
+                    },
+                    {
+                        "name": "targetAmtSource",
                         "pattern": "byAmt (?<byAmtS>.*)",
                         "description": "Target property and amount with default event"
                     },

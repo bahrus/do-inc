@@ -27,6 +27,13 @@ const parsePatterns = [
     },
     {
         name: 'targetAmtSource',
+        pattern: String.raw `byAmt (?<byAmtS>.*) on (?<localEventType>.*)`,
+        description: 'Amount and explicit event type with inferred property',
+        //defaultVals,
+        //dssKeys: [['targetSpecifier', 'targetSpecifier'], ['sourceSpecifier', 'sourceSpecifier']]
+    },
+    {
+        name: 'targetAmtSource',
         pattern: String.raw `byAmt (?<byAmtS>.*)`,
         description: 'Target property and amount with default event',
         //defaultVals,
