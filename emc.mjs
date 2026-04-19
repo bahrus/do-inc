@@ -5,9 +5,9 @@
 /** @import {RAConfig} from './types/roundabout/types' */
 /** @import {PatternConfig} from './types/nested-regex-groups/types' */
 
-const defaultVals = {
-    // No default values needed for localEventType since it's optional
-};
+// const defaultVals = {
+//     // No default values needed for localEventType since it's optional
+// };
 
 /** @type {PatternConfig[]} */
 const parsePatterns = [
@@ -15,15 +15,15 @@ const parsePatterns = [
         name: 'targetAmtSourceOnEvent',
         pattern: String.raw `^(?<targetSpecifier.prop>.*) byAmt (?<sourceSpecifier.constVal>.*) on (?<localEventType>.*)`,
         description: 'Target property, amount, and explicit event type',
-        defaultVals,
-        dssKeys: [['targetSpecifier', 'targetSpecifier'], ['sourceSpecifier', 'sourceSpecifier']]
+        //defaultVals,
+        //dssKeys: [['targetSpecifier', 'targetSpecifier'], ['sourceSpecifier', 'sourceSpecifier']]
     },
     {
         name: 'targetAmtSource',
         pattern: String.raw `^(?<targetSpecifier.prop>.*) byAmt (?<sourceSpecifier.constVal>.*)`,
         description: 'Target property and amount with default event',
-        defaultVals,
-        dssKeys: [['targetSpecifier', 'targetSpecifier'], ['sourceSpecifier', 'sourceSpecifier']]
+        //defaultVals,
+        //dssKeys: [['targetSpecifier', 'targetSpecifier'], ['sourceSpecifier', 'sourceSpecifier']]
     }
 ];
 
