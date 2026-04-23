@@ -1,7 +1,7 @@
 // @ts-check
 /** @import {Actions, PAP, AllProps, AP, IncParameters} from './types/do-inc/types' */;
 /** @import {RoundaboutOptions} from './types/roundabout/types' */;
-/** @import {ElementEnhancementGateway} from './types/assign-gingerly/types' */;
+/** @import {ElementEnhancementGateway, ElementInfer} from './types/assign-gingerly/types' */;
 /** @import {EMC} from './types/mount-observer/types' */;
 /** @import {RAConfig} from './types/roundabout/types' */;
 /** @import {Specifier} from './types/do-inc/types' */
@@ -58,12 +58,12 @@ class DoInc {
         /** @type Set<string> */
         //const alreadyAdded = new Set();
         if(statements.length === 0){
-            const name = enhancedElement.getAttribute('name');
-            if(!name) throw 400;
+            const prop = enhancedElement.getAttribute('name');
+            const inference = await infer(enhancedElement);
             statements.push({
                 value: {
-                    localEventType: 'click',
-                    prop: name,
+                    localEventType: inference.eventType,
+                    prop,
                     byAmtN: 1
                 }
             });
@@ -71,14 +71,16 @@ class DoInc {
         for(const statement of statements){
             const {value} = statement;
             if(!value) continue;
-            // If prop is empty or undefined, fall back to name attribute
-            if(!value.prop || value.prop.trim() === ''){
-                const name = enhancedElement.getAttribute('name');
-                if(!name) throw 400;
-                value.prop = name;
+            // If prop is empty or undefined, fall back to inference
+            // if(!value.prop){
+            //     const inference = await infer(enhancedElement);
+            //     value.prop = inference.propName;
+            // }
+            let {localEventType} = value;
+            if(!localEventType){
+                localEventType = (await infer(enhancedElement)).eventType;
             }
-            const {localEventType} = value;
-            enhancedElement.addEventListener(localEventType || 'click', e => {
+            enhancedElement.addEventListener(localEventType, e => {
                 self.handleEvent(self, e, value);
             });
         }
@@ -112,10 +114,25 @@ class DoInc {
         /** @type {any} */
         const target = targetElementId ? rn.getElementById(targetElementId) : (enhancedElement.closest('[itemscope]') || rn.host);
         if(!target) throw 404;
-        const currentVal = target[prop] || 0;
-        const newVal = currentVal + byAmtN;
-        target[prop] = newVal;
+        prop = prop || enhancedElement.getAttribute('name');
+        if(!prop){
+            const inference = await infer(target);
+            const currentVal = inference.value || 0;
+            const newVal = currentVal + byAmtN;
+            inference.value = newVal;
+        }else{
+            const currentVal = target[prop] || 0;
+            const newVal = currentVal + byAmtN;
+            target[prop] = newVal;
+        }
+        
     }
 }
+
+/**
+ * 
+ * @param {Element & ElementEnhancementGateway} from 
+ */
+async function infer(from){return /** @type {ElementInfer} */ (/** @type {any} */ (from.enh.get((await import('assign-gingerly/Infer.js')).registryItem)));}
 
 export {DoInc}
