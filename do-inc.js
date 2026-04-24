@@ -71,11 +71,6 @@ class DoInc {
         for(const statement of statements){
             const {value} = statement;
             if(!value) continue;
-            // If prop is empty or undefined, fall back to inference
-            // if(!value.prop){
-            //     const inference = await infer(enhancedElement);
-            //     value.prop = inference.propName;
-            // }
             let {localEventType} = value;
             if(!localEventType){
                 localEventType = (await infer(enhancedElement)).eventType;
