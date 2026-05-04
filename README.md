@@ -43,7 +43,7 @@ The following shows all the required html mockup in all its glory
 </mood-stone>
 ```
 
-This increments age by 1 on click.
+This increments the age property of the host (mood-stone) by 1 on the click event of the adorned button element.
 
 ## Specifying the event to trigger increment:
 

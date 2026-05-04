@@ -1,7 +1,8 @@
 // @ts-check
 /** @import {Actions, PAP, AllProps, AP, IncParameters} from './types/do-inc/types' */;
 /** @import {RoundaboutOptions} from './types/roundabout/types' */;
-/** @import {ElementEnhancementGateway, ElementInfer, SpawnContext} from './types/assign-gingerly/types' */;
+/** @import {ElementEnhancementGateway, SpawnContext} from './types/assign-gingerly/types' */;
+/** @import {Infer} from './types/inferencer/types' */
 /** @import {EMC} from './types/mount-observer/types' */;
 /** @import {RAConfig} from './types/roundabout/types' */;
 
@@ -69,7 +70,7 @@ class DoInc {
             if(!value) continue;
             let {localEventType} = value;
             if(!localEventType){
-                localEventType = (await infer(enhancedElement)).eventType;
+                localEventType = /** */ (await infer(enhancedElement)).eventType;
             }
             enhancedElement.addEventListener(localEventType, e => {
                 self.handleEvent(self, e, value);
@@ -124,6 +125,6 @@ class DoInc {
  * 
  * @param {Element & ElementEnhancementGateway} from 
  */
-async function infer(from){return /** @type {ElementInfer} */ (/** @type {any} */ (from.enh.get((await import('assign-gingerly/Infer.js')).registryItem)));}
+async function infer(from){return /** @type {Infer} */ (/** @type {any} */ (from.enh.get((await import('inferencer/inferencer.js')).registryItem)));}
 
 export {DoInc}
