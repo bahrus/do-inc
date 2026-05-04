@@ -1,16 +1,9 @@
 // @ts-check
 /** @import {Actions, PAP, AllProps, AP, IncParameters} from './types/do-inc/types' */;
 /** @import {RoundaboutOptions} from './types/roundabout/types' */;
-/** @import {ElementEnhancementGateway, ElementInfer} from './types/assign-gingerly/types' */;
+/** @import {ElementEnhancementGateway, ElementInfer, SpawnContext} from './types/assign-gingerly/types' */;
 /** @import {EMC} from './types/mount-observer/types' */;
 /** @import {RAConfig} from './types/roundabout/types' */;
-/** @import {Specifier} from './types/do-inc/types' */
-/**
- * @type {EMC<any, AllProps, Element, RAConfig<AllProps, Actions>>}
- */
-import emc from './emc.json' with {type: 'json'};
-
-const {customData} = emc;
 
 /**
  * @implements {Actions}
@@ -20,19 +13,21 @@ class DoInc {
     /**
      * @this {AllProps & Actions}
      * @param {Element & ElementEnhancementGateway} enhancedElement 
-     * @param {*} ctx 
-     * @param {AllProps} initVals 
+     * @param {SpawnContext} ctx 
+     * @param {PAP} initVals 
      */
     constructor(enhancedElement, ctx, initVals){
-        this.init(this, enhancedElement, initVals);
+        this.init(this, enhancedElement, ctx, initVals);
     }
 
     /**
      * @param {AllProps & Actions} self 
      * @param {Element & ElementEnhancementGateway} enhancedElement 
+     * @param {SpawnContext} ctx 
      * @param {PAP} initVals 
      */
-    async init(self, enhancedElement, initVals){
+    async init(self, enhancedElement, ctx, initVals){
+        const {customData} = /** @type {EMC<any, AllProps, Element, RAConfig<AllProps, Actions>>} */ (ctx.emc);
         /**
          * @type {RoundaboutOptions}
          */
@@ -41,6 +36,7 @@ class DoInc {
             vm: self,
             initialPropVals: {
                 enhancedElement,
+                ...customData?.defaultPropVals,
                 ...initVals
             }
         };
