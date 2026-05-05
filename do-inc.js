@@ -101,11 +101,8 @@ class DoInc {
             }
             incParameters.byAmtN = byAmtN;
         }
-        const rn = /** @type {DocumentFragment & {host: unknown}} */ (enhancedElement.getRootNode());
 
-        /** @type {any} */
-        const target = targetElementId ? rn.getElementById(targetElementId) : (enhancedElement.closest('[itemscope]') || rn.host);
-        if(!target) throw 404;
+        const target = /** @type {any} */ (await ((await import('inferencer/upSearch.js')).upSearch(enhancedElement, targetElementId )));
         prop = prop || enhancedElement.getAttribute('name');
         if(!prop){
             const inference = await infer(target);
