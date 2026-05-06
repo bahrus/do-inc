@@ -82,3 +82,34 @@ This infers that the increment amount should be 1 on click.
     <button name=age  ➕="byAmt `12` on mouseover">Increment</button>
 </mood-stone>
 ```
+
+## Viewing Demos Locally
+
+1. Install git
+2. Fork/clone this repo
+3. Install node.js
+4. Open command window to folder where you cloned this repo
+5. > git submodule update --init --recursive
+6. > npm install
+7. > npm run serve
+8. Open http://localhost:8000/demo/ in a modern browser
+
+## Running Tests
+
+```
+> npm run test
+```
+
+## Using from ESM Module:
+
+```JavaScript
+import 'do-inc/do-inc.js';
+```
+
+## Using from CDN:
+
+```html
+<script type=module crossorigin=anonymous>
+    import 'https://esm.sh/do-inc';
+</script>
+```
