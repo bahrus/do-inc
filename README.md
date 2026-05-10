@@ -101,7 +101,7 @@ This infers that the increment amount should be 1 on click.
 5. > git submodule update --init --recursive
 6. > npm install
 7. > npm run serve
-8. Open http://localhost:8000/demo/ in a modern browser
+8. Open http://localhost:8000/ in a modern browser
 
 ## Running Tests
 
