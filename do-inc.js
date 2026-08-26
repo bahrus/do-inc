@@ -51,7 +51,7 @@ class DoInc {
         const { parsedStatements, enhancedElement } = self;
         const {success, statements} = parsedStatements;
         if(!success) throw 400;
-        const { nudge } = await import('mount-observer/nudge.js');
+        const { nudge } = await import('assign-gingerly/handlers/nudge.js');
         /** @type Set<string> */
         //const alreadyAdded = new Set();
         if(statements.length === 0){
@@ -102,7 +102,7 @@ class DoInc {
             incParameters.byAmtN = byAmtN;
         }
 
-        const target = /** @type {any} */ (await ((await import('inferencer/upSearch.js')).upSearch(enhancedElement, targetElementId )));
+        const target = /** @type {any} */ (await ((await import('assign-gingerly/inferencer/upSearch.js')).upSearch(enhancedElement, targetElementId )));
         prop = prop || enhancedElement.getAttribute('name');
         if(!prop){
             const inference = await infer(target);
@@ -122,6 +122,6 @@ class DoInc {
  * 
  * @param {Element & ElementEnhancementGateway} from 
  */
-async function infer(from){return /** @type {Infer} */ (/** @type {any} */ (from.enh.get((await import('inferencer/inferencer.js')).registryItem)));}
+async function infer(from){return /** @type {Infer} */ (/** @type {any} */ (from.enh.get((await import('assign-gingerly/inferencer/inferencer.js')).registryItem)));}
 
 export {DoInc}
