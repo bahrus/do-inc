@@ -53,7 +53,7 @@ const parsePatterns = [
  */
 export const emc = {
     enhConfig: {
-        enhKey: 'DoInc',
+        enhKey: 'doInc',
         spawn: 'do-inc/do-inc.js',
         withAttrs: {
             base: 'do-inc',
