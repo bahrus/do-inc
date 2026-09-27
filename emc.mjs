@@ -69,9 +69,16 @@ export const emc = {
         weakRef: {
             properties: ['enhancedElement']
         },
+        // Transfers the attribute-parsed `parsedStatements` into `increments` —
+        // the property `hydrate` actually reads. Programmatic callers skip
+        // `parsedStatements` entirely and assign `increments` directly.
+        compacts: {
+            when_parsedStatements_changes_call_onParsedStatementsChange: 0
+        },
         actions: {
             hydrate: {
-                ifAllOf: ['parsedStatements', 'enhancedElement']
+                ifKeyIn: ['increments', 'initialized'],
+                ifAllOf: ['increments', 'enhancedElement', 'initialized']
             }
         }
     }

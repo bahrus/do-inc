@@ -28,7 +28,7 @@ class DoInc {
      * @param {PAP} initVals 
      */
     async init(self, enhancedElement, ctx, initVals){
-        const {customData} = /** @type {EMC<any, AllProps, Element, RAConfig<AllProps, Actions>>} */ (ctx.emc);
+        const {customData} = /** @type {EMC<any, AllProps, Element, RAConfig<AllProps, Actions>>} */ (ctx.emc || ctx.config);
         /**
          * @type {RoundaboutOptions}
          */
@@ -41,40 +41,57 @@ class DoInc {
                 ...initVals
             }
         };
-        (await import('roundabout-lib/roundabout.js')).roundabout(raOptions);
+        await (await import('roundabout-lib/roundabout.js')).roundabout(raOptions);
+        self.initialized = true;
     }
 
     /**
-     * @param {AP & Actions} self 
+     * Transfers the attribute-parsed `parsedStatements` into `increments` --
+     * the property `hydrate` actually reads.  Programmatic callers skip
+     * `parsedStatements` entirely and assign `increments` directly.
+     * Invoked via the `when_parsedStatements_changes_call_onParsedStatementsChange`
+     * compact, never called directly.
+     * @param {AP} self
+     * @returns {PAP}
      */
-    async hydrate(self){
-        const { parsedStatements, enhancedElement } = self;
+    onParsedStatementsChange(self){
+        const {parsedStatements} = self;
+        if(parsedStatements === undefined) return {};
         const {success, statements} = parsedStatements;
         if(!success) throw 400;
-        const { nudge } = await import('assign-gingerly/handlers/nudge.js');
-        /** @type Set<string> */
-        //const alreadyAdded = new Set();
-        if(statements.length === 0){
-            const prop = enhancedElement.getAttribute('name');
-            const inference = await infer(enhancedElement);
-            statements.push({
-                value: {
-                    localEventType: inference.eventType,
-                    prop,
-                    byAmtN: 1
-                }
-            });
-        }
+        /** @type {Array<IncParameters>} */
+        const increments = [];
         for(const statement of statements){
-            const {value} = statement;
-            if(!value) continue;
+            if(statement.value !== undefined) increments.push(statement.value);
+        }
+        return {increments};
+    }
+
+    /** @type {AbortController | undefined} */
+    #ac;
+
+    /**
+     * @param {AP & Actions} self
+     */
+    async hydrate(self){
+        const { increments, enhancedElement } = self;
+        const { nudge } = await import('assign-gingerly/handlers/nudge.js');
+        // Re-hydrating (increments reassigned) replaces the listeners from the
+        // previous pass rather than stacking on them.
+        this.#ac?.abort();
+        const {signal} = this.#ac = new AbortController();
+        // Empty attribute (or empty array): a single rule, with the property
+        // inferred from the name attribute, an amount of 1, and the inferred event.
+        /** @type {Array<IncParameters>} */
+        const rules = increments.length === 0 ? [{}] : increments;
+        for(const value of rules){
             let {localEventType} = value;
             if(!localEventType){
                 localEventType = /** */ (await infer(enhancedElement)).eventType;
             }
             enhancedElement.addEventListener(localEventType, e => {
                 self.handleEvent(self, e, value);
-            });
+            }, {signal});
         }
         nudge(enhancedElement);
         return /** @type {PAP} */({
@@ -93,13 +110,13 @@ class DoInc {
     async handleEvent(self, e, incParameters){
         const {enhancedElement} = self;
         let {prop, byAmtN, byAmtS, targetElementId} = incParameters;
+        // Computed locally, so a caller-supplied rule object is never mutated.
         if(byAmtN === undefined){
             if(byAmtS){
                 byAmtN = Number(byAmtS.replaceAll('`', ''));
             } else {
                 byAmtN = 1; // Default increment amount
             }
-            incParameters.byAmtN = byAmtN;
         }
 
         const target = /** @type {any} */ (await ((await import('assign-gingerly/inferencer/upSearch.js')).upSearch(enhancedElement, targetElementId )));

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programmatic imperative</title>
+    <!-- #include virtual="/imports.html" -->
+</head>
+<body>
+    <mood-stone id=counter>
+        <span itemprop=age></span>
+    </mood-stone>
+    <button id=button>Increment</button>
+    <script type=module>
+        class MoodStone extends HTMLElement {
+            #age;
+            get age(){
+                return this.#age;
+            }
+            set age(nv){
+                this.#age = nv;
+                this.querySelector('[itemprop="age"]').textContent = nv;
+            }
+        }
+        customElements.define('mood-stone', MoodStone);
+        for(const ms of document.querySelectorAll('mood-stone')) ms.age = 0;
+    </script>
+    <script type=module>
+        import {defDoInc} from '/def.js';
+        const emc = await defDoInc(document.body);
+        // increment a peer element, rather than the itemscope host
+        button.enh.get(emc).increments = [
+            {prop: 'age', byAmtN: 5, targetElementId: 'counter'}
+        ];
+    </script>
+</body>
+</html>
