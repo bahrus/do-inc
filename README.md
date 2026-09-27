@@ -109,7 +109,12 @@ import { defDoInc } from 'do-inc/def.js';
 const emc = await defDoInc(document.body); // or a shadow root's host, for a scoped registry
 ```
 
-Then set `increments` -- an array with one object per statement.  Anything omitted is inferred exactly as with the attribute, and an empty array is equivalent to a bare `➕` attribute.
+Then set `increments` -- one object per statement.  Anything omitted is inferred exactly as with the attribute.  `increments` accepts:
+
+- a property name:  `'age'` (equivalent to `do-inc=age`);
+- a single object:  `{prop: 'age', byAmtN: 12}`;
+- an array of either, mixed freely:  `['age', {prop: 'score', byAmtN: 10}]`;
+- an empty array, equivalent to a bare `➕` attribute (everything inferred).
 
 | Statement part       | Property          | Notes                                                              |
 |----------------------|-------------------|--------------------------------------------------------------------|

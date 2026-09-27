@@ -6,8 +6,8 @@
 
 # Test info
 
-- Name: tests\Programmatic\ImperativeReassign.spec.mjs >> Programmatic>ImperativeReassign
-- Location: tests\Programmatic\ImperativeReassign.spec.mjs:2:1
+- Name: tests\Programmatic\ShorthandForms.spec.mjs >> Programmatic>ShorthandForms
+- Location: tests\Programmatic\ShorthandForms.spec.mjs:2:1
 
 # Error details
 
@@ -28,16 +28,20 @@ Call log:
 ```
 
 ```yaml
-- text: "22"
-- button "Increment"
+- text: "0"
+- button "Increment by 1"
+- text: "0"
+- button "Increment by 12"
+- text: "101"
+- button "Increment by 1 and by 100"
 ```
 
 # Test source
 
 ```ts
   1 | import { test, expect } from '@playwright/test';
-  2 | test('Programmatic>ImperativeReassign', async ({ page }) => {
-  3 |     await page.goto('./tests/Programmatic/ImperativeReassign.html');
+  2 | test('Programmatic>ShorthandForms', async ({ page }) => {
+  3 |     await page.goto('./tests/Programmatic/ShorthandForms.html');
   4 |     await page.waitForTimeout(2500);
   5 |     const target = page.locator('#target');
 > 6 |     await expect(target).toHaveAttribute('mark', 'good');

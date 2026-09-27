@@ -89,3 +89,33 @@ problems:
   separately.**
 - `emc.json` / `➕.json` were regenerated with `npm run build`.
 
+## Bruce's Response
+
+Shouldn't we support increments a string (prop) and an object?
+
+
+
+## Response to Bruce's Response
+
+Yes. `increments` now accepts:
+
+- a property name: `'age'`, the same as `do-inc=age`;
+- a single object: `{prop: 'age', byAmtN: 12}`;
+- an array of either, mixed freely: `['age', {prop: 'score', byAmtN: 10}]`;
+- an empty array, which still means one fully inferred rule.
+
+A new `toRules()` helper in `do-inc.js` normalizes these in `hydrate`. A
+non-array is wrapped in an array, and string entries become `{prop}`. The
+type is now
+`Increments = string | IncParameters | Array<string | IncParameters>`.
+
+There is a new demo/test, `demo/Programmatic/ShorthandForms.html` and
+`tests/Programmatic/ShorthandForms.*`. It has three `<mood-stone>`s, one per
+form (string, object, mixed array `['age', {prop: 'age', byAmtN: 100}]`),
+clicks each once, and expects `1`, `12` and `101`. With `toRules` made
+array-only, the test fails. All 11 Playwright tests pass. The README table's
+intro now lists the accepted forms.
+
+One edge case: an empty string `''` is falsy, so `hydrate`'s `ifAllOf`
+doesn't fire and nothing is attached. That seems right for "no property
+given". For "infer everything", use `[]`.

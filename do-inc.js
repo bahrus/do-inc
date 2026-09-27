@@ -1,5 +1,5 @@
 // @ts-check
-/** @import {Actions, PAP, AllProps, AP, IncParameters} from './types/do-inc/types' */;
+/** @import {Actions, PAP, AllProps, AP, IncParameters, Increments} from './types/do-inc/types' */;
 /** @import {RoundaboutOptions} from './types/roundabout/types' */;
 /** @import {ElementEnhancementGateway, SpawnContext} from './types/assign-gingerly/types' */;
 /** @import {Infer} from './types/inferencer/types' */
@@ -80,10 +80,7 @@ class DoInc {
         // previous pass rather than stacking on them.
         this.#ac?.abort();
         const {signal} = this.#ac = new AbortController();
-        // Empty attribute (or empty array): a single rule, with the property
-        // inferred from the name attribute, an amount of 1, and the inferred event.
-        /** @type {Array<IncParameters>} */
-        const rules = increments.length === 0 ? [{}] : increments;
+        const rules = toRules(increments);
         for(const value of rules){
             let {localEventType} = value;
             if(!localEventType){
@@ -136,8 +133,22 @@ class DoInc {
 }
 
 /**
- * 
- * @param {Element & ElementEnhancementGateway} from 
+ * Normalize `increments` into an array of rules.  Programmatic callers may
+ * pass a property name ('age'), a single rule object, or an array mixing both.
+ * An empty array yields a single rule with everything inferred:  the property
+ * from the name attribute, an amount of 1, and the inferred event.
+ * @param {Increments} increments
+ * @returns {Array<IncParameters>}
+ */
+function toRules(increments){
+    const arr = Array.isArray(increments) ? increments : [increments];
+    if(arr.length === 0) return [{}];
+    return arr.map(inc => typeof inc === 'string' ? {prop: inc} : inc);
+}
+
+/**
+ *
+ * @param {Element & ElementEnhancementGateway} from
  */
 async function infer(from){return /** @type {Infer} */ (/** @type {any} */ (from.enh.get((await import('assign-gingerly/inferencer/inferencer.js')).registryItem)));}
 
